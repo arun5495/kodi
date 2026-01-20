@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Countdown to Your Birthday!</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #FFD1DC, #F8BBD0);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    .countdown-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 28px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.10);
+      max-width: 480px;
+      margin: 100px auto;
+    }
+    .countdown-item { display:inline-block; margin:0 10px; font-size:1.8rem; color: #c51162;}
+    .countdown-item span { font-size:2.5rem;}
+  </style>
+</head>
+<body>
+  <div class="countdown-container text-center">
+    <h2>⏳ Countdown to Your Big Day! ⏳</h2>
+    <p class="lead">Wait for your next surprise...</p>
+    <div>
+      <div class="countdown-item"><span id="days">00</span><br>Days</div>
+      <div class="countdown-item"><span id="hours">00</span><br>Hours</div>
+      <div class="countdown-item"><span id="minutes">00</span><br>Minutes</div>
+      <div class="countdown-item"><span id="seconds">00</span><br>Seconds</div>
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-danger" onclick="nextPage()">Next Surprise →</button>
+    </div>
+  </div>
+  <script>
+    // Set the birthday date (YYYY-MM-DD)
+    const birthdayDate = new Date("2026-01-21T00:00:00").getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const timeLeft = birthdayDate - now;
+      if (timeLeft <= 0) {
+        document.querySelector(".lead").textContent = "Go to Next Surprise!";
+        setTimeout(nextPage, 1200);
+        return;
+      }
+      document.getElementById("days").textContent = String(Math.floor(timeLeft/(1000*60*60*24))).padStart(2,0);
+      document.getElementById("hours").textContent = String(Math.floor((timeLeft%(1000*60*60*24))/(1000*60*60))).padStart(2,0);
+      document.getElementById("minutes").textContent = String(Math.floor((timeLeft%(1000*60*60))/(1000*60))).padStart(2,0);
+      document.getElementById("seconds").textContent = String(Math.floor((timeLeft%(1000*60))/1000)).padStart(2,0);
+      setTimeout(updateCountdown,1000);
+    }
+    function nextPage(){window.location.replace('candle.html');}
+    updateCountdown();
+    window.history.forward();
+    function noBack(){window.history.forward();}
+    setTimeout("noBack()",0);
+    window.onunload=function(){null};
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

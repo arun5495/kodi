@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blow the Candles! 🎂</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: radial-gradient(circle at top, #ffe0b2 0, #ffccbc 40%, #ffab91 100%);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 24px 12px 40px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    h2 {
+      color: #bf360c;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      margin-top: 12px;
+      z-index: 10;
+    }
+    .sub {
+      color: #5d4037;
+      font-size: 0.98rem;
+    }
+
+    /* Center section */
+    .middle-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Cake area */
+    .stage {
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      padding-top: 40px;
+    }
+    .plate {
+      width: 90%;
+      height: 22px;
+      background: #d7ccc8;
+      border-radius: 50%;
+      margin: 0 auto;
+      box-shadow: 0 10px 18px rgba(0,0,0,0.25);
+      position: relative;
+      z-index: 5;
+    }
+    .cake-layer {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      border-radius: 18px 18px 10px 10px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+      z-index: 4;
+    }
+    .cake-layer.layer1 {
+      bottom: 22px;
+      height: 82px;
+      background: linear-gradient(#f8bbd0, #f48fb1);
+    }
+    .cake-layer.layer2 {
+      bottom: 82px;
+      height: 64px;
+      width: 68%;
+      background: linear-gradient(#ffecb3, #ffe082);
+    }
+    .cake-layer.layer3 {
+      bottom: 138px;
+      height: 48px;
+      width: 52%;
+      background: linear-gradient(#b3e5fc, #81d4fa);
+    }
+
+    /* Candles row */
+    .candles-row {
+      position: absolute;
+      bottom: 188px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 11px;
+      z-index: 7;
+    }
+    .candle {
+      width: 13px;
+      height: 48px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #ffffff,
+        #ffffff 8px,
+        #ff8a80 8px,
+        #ff8a80 14px
+      );
+      border-radius: 6px;
+      position: relative;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+    .flame {
+      width: 18px;
+      height: 26px;
+      background: radial-gradient(circle at 30% 0%, #ffff8d 0, #ffca28 40%, #ff7043 80%);
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      bottom: 46px;
+      transform: translateX(-50%);
+      box-shadow: 0 0 18px 3px rgba(255, 213, 79, 0.9);
+      animation: flicker 0.4s infinite alternate;
+    }
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1); opacity: 1; }
+      100% { transform: translateX(-50%) scale(1.06) translateY(-2px); opacity: 0.85; }
+    }
+    .flame.off { display: none; }
+
+    /* Countdown + buttons */
+    #countLabel {
+      font-weight: bold;
+      margin-top: 12px;
+      color: #bf360c;
+      font-size: 1.2rem;
+      z-index: 12;
+    }
+
+    /* Bubble button style */
+    .bubble-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 28px;
+      border-radius: 999px;
+      border: none;
+      color: #ffffff;
+      background: linear-gradient(135deg, #ff7043, #ff1744);
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.32);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.18s, box-shadow 0.18s;
+      margin-top: 14px;
+      z-index: 12;
+    }
+    .bubble-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.22);
+    }
+    .bubble-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.38);
+    }
+    .bubble-btn::before,
+    .bubble-btn::after {
+      content: "";
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      top: 100%;
+      left: -10%;
+      background: radial-gradient(circle, rgba(255,255,255,0.7) 0, rgba(255,255,255,0) 60%);
+      opacity: 0;
+      transform: translateY(0);
+      transition: all 0.5s;
+    }
+    .bubble-btn:active::before,
+    .bubble-btn:active::after {
+      top: -20%;
+      opacity: 0.9;
+      transform: translateY(-30%);
+    }
+
+    #nextBtn {
+      margin-top: 12px;
+      display: none;
+      z-index: 12;
+    }
+
+    /* Falling mini cards */
+    .card-piece {
+      position: fixed;
+      top: -120px;
+      width: 80px;
+      height: 50px;
+      background: #fff3e0;
+      border-radius: 10px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #d84315;
+      border: 2px solid #ffab91;
+      z-index: 999;
+      animation: fall linear 4s forwards;
+    }
+    .card-piece span {
+      transform: rotate(-6deg);
+    }
+    @keyframes fall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(25deg); opacity: 0; }
+    }
+
+    @media (max-width: 576px) {
+      .stage {max-width: 330px;}
+      .card-piece {width: 70px; height: 44px; font-size: 0.7rem;}
+    }
+  </style>
+</head>
+<body>
+  <h2>Blow All the Candles! 🎂</h2>
+  <p class="sub">Wait for 5-second countdown… then blow at the perfect moment! 😉</p>
+
+  <div class="middle-wrap" role="main" aria-label="Birthday cake with candles">
+    <div class="stage" aria-hidden="true">
+      <div class="plate"></div>
+      <div class="cake-layer layer1"></div>
+      <div class="cake-layer layer2"></div>
+      <div class="cake-layer layer3"></div>
+
+      <div class="candles-row" id="candlesRow">
+        <div class="candle" tabindex="0" role="button" aria-label="Candle 1"><div class="flame"></div></div>
+        <div class="candle" tabindex="0" role="button" aria-label="Candle 2"><div class="flame"></div></div>
+        <div class="candle" tabindex="0" role="button" aria-label="Candle 3"><div class="flame"></div></div>
+        <div class="candle" tabindex="0" role="button" aria-label="Candle 4"><div class="flame"></div></div>
+        <div class="candle" tabindex="0" role="button" aria-label="Candle 5"><div class="flame"></div></div>
+        <div class="candle" tabindex="0" role="button" aria-label="Candle 6"><div class="flame"></div></div>
+        <div class="candle" tabindex="0" role="button" aria-label="Candle 7"><div class="flame"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="countLabel" aria-live="polite" aria-atomic="true" aria-relevant="text">Countdown: 5</div>
+
+  <button class="bubble-btn mt-2" id="blowBtn" disabled aria-live="polite" aria-atomic="true" aria-relevant="text">
+    Wait... ⏳
+  </button>
+  <br>
+  <button class="btn btn-primary btn-sm" id="nextBtn" aria-label="Go to next surprise">Next Surprise →</button>
+
+  <script>
+    const blowBtn = document.getElementById('blowBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const countLabel = document.getElementById('countLabel');
+    const flames = document.querySelectorAll('.flame');
+
+    let countdown = 5;
+    let canBlow = false;
+    let timerId = null;
+
+    function startCountdown() {
+      countLabel.textContent = 'Countdown: ' + countdown;
+      timerId = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+          countLabel.textContent = 'Countdown: ' + countdown;
+        } else {
+          clearInterval(timerId);
+          countLabel.textContent = 'Blow NOW! 🎤';
+          blowBtn.disabled = false;
+          blowBtn.textContent = 'Blow the Candles! 💨';
+          canBlow = true;
+
+          setTimeout(() => {
+            if (canBlow) {
+              canBlow = false;
+              blowBtn.disabled = true;
+              blowBtn.textContent = 'Too late 😛 Try again';
+              resetCountdown();
+            }
+          }, 1300);
+        }
+      }, 1000);
+    }
+
+    function resetCountdown() {
+      setTimeout(() => {
+        countdown = 5;
+        countLabel.textContent = 'Countdown: ' + countdown;
+        blowBtn.textContent = 'Wait... ⏳';
+        blowBtn.disabled = true;
+        flames.forEach(f => f.classList.remove('off'));
+        nextBtn.style.display = 'none';
+        startCountdown();
+      }, 1400);
+    }
+
+    function blowCandles() {
+      if (!canBlow) return;
+      canBlow = false;
+      flames.forEach(f => f.classList.add('off'));
+      launchCardRain();
+      blowBtn.disabled = true;
+      blowBtn.textContent = 'Nice blow! 💖';
+      setTimeout(() => {
+        nextBtn.style.display = 'inline-block';
+      }, 1400);
+    }
+
+    function launchCardRain() {
+      const messages = [
+        'Happy Bday! 🎂',
+        'Stay Cute 💕',
+        'Keep Smiling 😊',
+        'Lots of Love 💖',
+        'For You 🎁',
+        'Bestie 💫'
+      ];
+      for (let i = 0; i < 26; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'card-piece';
+        piece.style.left = Math.random() * 95 + 'vw';
+        piece.style.animationDelay = (Math.random() * 0.8) + 's';
+        const msg = messages[Math.floor(Math.random() * messages.length)];
+        piece.innerHTML = `<span>${msg}</span>`;
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 4200);
+      }
+    }
+
+    blowBtn.addEventListener('click', blowCandles);
+    flames.forEach(f => f.addEventListener('click', blowCandles));
+    nextBtn.addEventListener('click', () => window.location.replace('wish.html'));
+
+    startCountdown();
+
+    // Prevent back button
+    window.history.forward();
+    function noBack(){window.history.forward();}
+    setTimeout(noBack,0);
+    window.onunload=function(){null};
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
